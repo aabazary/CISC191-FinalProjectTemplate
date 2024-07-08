@@ -1,4 +1,4 @@
-package edu.sdccd.cisc191.common;
+package edu.sdccd.cisc191.template;
 
 public class Mage extends Character {
     private int intelligence;

@@ -1,9 +1,8 @@
-package edu.sdccd.cisc191.server;
+package edu.sdccd.cisc191.template;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import edu.sdccd.cisc191.common.Character;
-import edu.sdccd.cisc191.common.CharacterAdapter;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;

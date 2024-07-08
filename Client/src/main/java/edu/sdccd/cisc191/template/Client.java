@@ -1,11 +1,9 @@
 
-package edu.sdccd.cisc191.client;
+package edu.sdccd.cisc191.template;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import edu.sdccd.cisc191.common.*;
-import edu.sdccd.cisc191.common.Character;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -302,7 +300,7 @@ public class Client extends Application {
      * @param detailsStage
      */
 
-    private void handleGatherButtonClick(Character character, Button clickedButton, Label guessesLabel, Stage level1Stage, Stage detailsStage) {
+    void handleGatherButtonClick(Character character, Button clickedButton, Label guessesLabel, Stage level1Stage, Stage detailsStage) {
         String buttonType = (String) clickedButton.getUserData();
         int remainingGuesses = Integer.parseInt(guessesLabel.getText().replaceAll("\\D", ""));
 
