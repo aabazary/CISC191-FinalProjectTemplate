@@ -1,18 +1,1 @@
-[
-  {
-    "intelligence": 50,
-    "type": "Mage",
-    "name": "asdf",
-    "health": 20,
-    "luck": 4,
-    "gold": 2
-  },
-  {
-    "strength": 30,
-    "type": "Warrior",
-    "name": "asdfasdf",
-    "health": 50,
-    "luck": 2,
-    "gold": 1
-  }
-]
+[{"intelligence":50,"type":"Mage","name":"asdf","health":20,"luck":4,"gold":3},{"strength":30,"type":"Warrior","name":"asdfasdf","health":50,"luck":2,"gold":2}]

@@ -1,4 +1,4 @@
-package edu.sdccd.cisc191.template;
+package edu.sdccd.cisc191.common;
 
 public class Warrior extends Character {
     private int strength;

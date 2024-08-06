@@ -1,9 +1,13 @@
 
-package edu.sdccd.cisc191.template;
+package edu.sdccd.cisc191.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import edu.sdccd.cisc191.common.Character;
+import edu.sdccd.cisc191.common.CharacterAdapter;
+import edu.sdccd.cisc191.common.Mage;
+import edu.sdccd.cisc191.common.Warrior;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
