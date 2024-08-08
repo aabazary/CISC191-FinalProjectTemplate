@@ -1,4 +1,4 @@
-package edu.sdccd.cisc191.common;
+package edu.sdccd.cisc191.common.models;
 
 import com.google.gson.*;
 import com.google.gson.TypeAdapter;

@@ -1,19 +1,27 @@
-package edu.sdccd.cisc191.common;
+package edu.sdccd.cisc191.server.models;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
 
-public abstract class Character implements Serializable {
+@MappedSuperclass
+public abstract class CharacterEntity{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private int health;
     private int luck;
     private int gold;
 
-    public Character(String name, int health, int luck, int gold) {
+    public CharacterEntity(String name, int health, int luck, int gold) {
         this.name = name;
         this.health = health;
         this.luck = luck;
         this.gold = gold;
+    }
+
+    public CharacterEntity() {
+
     }
 
     public String getName() {
@@ -51,5 +59,13 @@ public abstract class Character implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{name='" + name + "', health=" + health + ", luck=" + luck + ", gold=" + gold + "}";
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

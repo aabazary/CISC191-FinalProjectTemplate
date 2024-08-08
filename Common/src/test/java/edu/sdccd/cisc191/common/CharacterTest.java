@@ -1,5 +1,8 @@
 package edu.sdccd.cisc191.common;
 
+import edu.sdccd.cisc191.common.models.Character;
+import edu.sdccd.cisc191.common.models.Mage;
+import edu.sdccd.cisc191.common.models.Warrior;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
