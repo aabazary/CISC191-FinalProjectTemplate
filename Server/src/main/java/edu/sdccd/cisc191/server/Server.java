@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "edu.sdccd.cisc191.server.repositories")
 public class Server {
-//    private static final int PORT = 5000;
+    private static final int PORT = 5000;
 //    private static final String CHARACTERS_JSON_PATH = "characters.json";
 //    private final Gson gson;
 

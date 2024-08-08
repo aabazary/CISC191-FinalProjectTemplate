@@ -20,13 +20,15 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
 public class Client extends Application {
 
-    private static final int PORT = 5000;
+    private static final int PORT = 8080;
     public static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Character.class, new CharacterAdapter())
             .create();
@@ -445,6 +447,7 @@ public class Client extends Application {
 
     public static void main(String[] args) {
         launch(args);
+//
     }
 }
 
