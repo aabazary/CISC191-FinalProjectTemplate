@@ -68,9 +68,9 @@ public class CharacterAdapter extends TypeAdapter<Character> {
         in.endObject();
 
         if (type.equals("Mage")) {
-            return new Mage(name, health, luck, intelligence, gold);
+            return new Mage(name, health, luck, intelligence, gold, "Mage");
         } else if (type.equals("Warrior")) {
-            return new Warrior(name, health, luck, strength, gold);
+            return new Warrior(name, health, luck, strength, gold, "Warrior");
         } else {
             throw new JsonParseException("Unknown character type: " + type);
         }

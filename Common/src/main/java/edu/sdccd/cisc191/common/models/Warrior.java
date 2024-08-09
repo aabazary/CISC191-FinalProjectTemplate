@@ -4,8 +4,8 @@ public class Warrior extends Character {
     private int strength;
     private String type;
 
-    public Warrior(String name, int health, int luck, int strength, int gold) {
-        super(name, health, luck, gold);
+    public Warrior(String name, int health, int luck, int strength, int gold,String type) {
+        super(name, health, luck, gold, type);
         this.strength = strength;
         this.type = "Warrior";
     }

@@ -4,8 +4,8 @@ public class Mage extends Character {
     private int intelligence;
     private String type;
 
-    public Mage(String name, int health, int luck, int intelligence, int gold) {
-        super(name, health, luck, gold);
+    public Mage(String name, int health, int luck, int intelligence, int gold,String type) {
+        super(name, health, luck, gold,type);
         this.intelligence = intelligence;
         this.type = "Mage";
     }

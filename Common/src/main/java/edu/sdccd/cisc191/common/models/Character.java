@@ -11,8 +11,9 @@ public abstract class Character implements Serializable {
     private int health;
     private int luck;
     private int gold;
+    private String type;
 
-    public Character(String name, int health, int luck, int gold) {
+    public Character(String name, int health, int luck, int gold, String type) {
         this.name = name;
         this.health = health;
         this.luck = luck;
@@ -66,5 +67,13 @@ public abstract class Character implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

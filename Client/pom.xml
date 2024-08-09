@@ -12,6 +12,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+
+        <dependency>
             <groupId>edu.sdccd.cisc191</groupId>
             <artifactId>Common</artifactId>
             <version>${project.version}</version>
