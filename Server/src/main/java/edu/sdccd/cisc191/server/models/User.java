@@ -1,7 +1,7 @@
 package edu.sdccd.cisc191.server.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "users")
@@ -15,18 +15,25 @@ public class User {
     private String username;
     private String password;
     private int score;
+    private boolean isPlaying=false;
 
+    @OneToOne
+//    @JoinColumn(name = "claimed_character_id")
+    @JsonIgnoreProperties("claimedBy")
+    private Character claimedCharacter;
 
     // Constructors, getters, and setters
 
     public User() {
     }
 
-    public User(String email, String username, String password, int score) {
+    public User(String email, String username, String password, int score, boolean isPlaying, Character claimedCharacter) {
         this.email = email;
         this.username = username;
         setPassword(password); // Ensure the password is hashed when setting
         this.score = score;
+        this.isPlaying = isPlaying;
+        this.claimedCharacter = claimedCharacter;
     }
 
     // Getters and setters
@@ -63,13 +70,28 @@ public class User {
         this.password = password;
     }
 
-
     public int getScore() {
         return score;
     }
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
+    }
+
+    public Character getClaimedCharacter() {
+        return claimedCharacter;
+    }
+
+    public void setClaimedCharacter(Character claimedCharacter) {
+        this.claimedCharacter = claimedCharacter;
     }
 
     @Override
@@ -79,6 +101,8 @@ public class User {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", score=" + score +
+                ", isPlaying=" + isPlaying +
+                ", claimedCharacter=" + (claimedCharacter != null ? claimedCharacter.getName() : "null") +
                 '}';
     }
 }

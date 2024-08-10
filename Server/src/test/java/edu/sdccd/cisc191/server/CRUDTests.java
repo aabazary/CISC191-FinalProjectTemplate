@@ -29,8 +29,8 @@ public class CRUDTests {
 
     @BeforeEach
     public void setup() {
-        user = new User("test@example.com", "testuser", "password", 100);
-        character = new Character("Hero", 100, 10, 50, 20, 15, true,true, "Warrior");
+        user = new User("test@example.com", "testuser", "password", 100, false, null );
+        character = new Character("Hero", 100, 10, 50, 20, 15, true,true, "Warrior", null);
     }
 
     @Test
