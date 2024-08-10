@@ -59,6 +59,7 @@ public class CharacterController {
         if (optionalCharacter.isPresent()) {
             Character existingCharacter = optionalCharacter.get();
 
+            //Character Fields to get updated with new Values
             existingCharacter.setName(updatedCharacter.getName());
             existingCharacter.setHealth(updatedCharacter.getHealth());
             existingCharacter.setLuck(updatedCharacter.getLuck());
@@ -68,6 +69,7 @@ public class CharacterController {
             existingCharacter.setType(updatedCharacter.getType());
             existingCharacter.setBeingUsed(updatedCharacter.isBeingUsed());
 
+            //Save updated character
             Character savedCharacter = characterRepository.save(existingCharacter);
 
             return ResponseEntity.ok(savedCharacter);
@@ -94,12 +96,15 @@ public class CharacterController {
             return ResponseEntity.status(409).body("Character is already claimed.");
         }
 
+        // Set the character as being used and assign it to the user
         character.setBeingUsed(true);
         character.setClaimedBy(user);
 
+        // Set the user as playing and associate the claimed character
         user.setPlaying(true);
         user.setClaimedCharacter(character);
 
+        // Save the changes to the database
         characterRepository.save(character);
         userRepository.save(user);
 
@@ -126,12 +131,15 @@ public class CharacterController {
             return ResponseEntity.status(409).body("Character is not claimed by this user.");
         }
 
+        // Set isBeingUsed to false for the character and remove its association with the user
         character.setBeingUsed(false);
         character.setClaimedBy(null);
 
+        //Set the User setPlaying to false and remove association with character
         user.setPlaying(false);
         user.setClaimedCharacter(null);
 
+        //Save changes to DB
         characterRepository.save(character);
         userRepository.save(user);
 

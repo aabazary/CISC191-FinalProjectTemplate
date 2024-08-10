@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "characters")
 public class Character {
 
     @Id
@@ -22,10 +21,11 @@ public class Character {
     private String type;
 
     @ManyToOne
-    @JoinColumn(name = "claimed_by")
     @JsonIgnoreProperties("claimedCharacter")
     private User claimedBy;
 
+
+    //Constructors
     public Character(String name, int health, int luck, int gold, int strength, int intelligence, boolean isPublic, boolean isBeingUsed, String type, User claimedBy) {
         this.name = name;
         this.health = health;

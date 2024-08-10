@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Client extends Application {
@@ -112,6 +113,7 @@ public class Client extends Application {
         Label responseLabel = new Label();
         gridPane.add(responseLabel, 1, 4);
 
+        //Sign Up Event Listener, sending Signup request to Server
         submitButton.setOnAction(e -> {
             String email = emailField.getText();
             String username = usernameField.getText();
@@ -146,6 +148,7 @@ public class Client extends Application {
         Label responseLabel = new Label();
         gridPane.add(responseLabel, 1, 3);
 
+        //Log In Event Listener, sending LogIn request to Server
         submitButton.setOnAction(e -> {
             String email = emailField.getText();
             String password = passwordField.getText();
@@ -155,6 +158,7 @@ public class Client extends Application {
             System.out.println("Login response: " + response);
 
             if (response.contains("Login successful")) {
+                //If login successful, return User Token and ID
                 JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
                 String token = jsonObject.get("token").getAsString();
                 this.userId = jsonObject.get("userId").getAsLong();
@@ -182,6 +186,7 @@ public class Client extends Application {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
 
+        //Fetch Character Data associated with Logged-In User
         String characterData = fetchCharacterData(userToken);
 
         Button selectCharacterButton = new Button("Select Your Character");
@@ -195,6 +200,7 @@ public class Client extends Application {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
+                    //Check if character claimed by current user
                     if (jsonObject.has("claimedBy") && !jsonObject.isNull("claimedBy")) {
                         JSONObject claimedByUser = jsonObject.getJSONObject("claimedBy");
                         Long claimedById = claimedByUser.getLong("id");
@@ -209,6 +215,7 @@ public class Client extends Application {
                             Label characterLabel = new Label(name);
                             Button unclaimButton = new Button("Unclaim");
 
+                            //Unclaim button event listener to unclaim character
                             unclaimButton.setOnAction(e -> {
                                 unclaimCharacter(characterID, userToken);
                                 selectCharacterButton.setDisable(false);
@@ -231,6 +238,7 @@ public class Client extends Application {
 
         selectCharacterButton.setDisable(isCharacterClaimed);
 
+        //Show Character selection screen on button click
         selectCharacterButton.setOnAction(e -> showCharacterSelection(primaryStage, userToken));
 
         Button backToLoginButton = new Button("Back to Login/Signup");
@@ -282,7 +290,6 @@ public class Client extends Application {
      * @param userToken Token, Currently not working(route not protected)
      */
     private void showCharacterSelection(Stage primaryStage, String userToken) {
-        System.out.println("show character selection");
         primaryStage.setTitle("Select Your Character");
 
         VBox vbox = new VBox(10);
@@ -290,45 +297,45 @@ public class Client extends Application {
 
         String characterData = fetchCharacterData(userToken);
         if (characterData == null || characterData.isEmpty()) {
-            System.out.println("No character data received.");
             Label errorLabel = new Label("Failed to load character data.");
             vbox.getChildren().add(errorLabel);
         } else {
-            System.out.println("Character data received: " + characterData);
-
             try {
                 JSONArray jsonArray = new JSONArray(characterData);
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    String name = jsonObject.getString("name");
-                    int health = jsonObject.getInt("health");
-                    int luck = jsonObject.getInt("luck");
-                    int gold = jsonObject.getInt("gold");
-                    String type = jsonObject.getString("type");
-                    int strength = jsonObject.getInt("strength");
-                    int intelligence = jsonObject.getInt("intelligence");
-                    boolean isBeingUsed = jsonObject.getBoolean("beingUsed");
-                    Long characterID = jsonObject.getLong("id");
+                jsonArray.toList().stream()
+                        .map(obj -> (Map<String, Object>) obj)
+                        .forEach(jsonObject -> {
+                            String name = (String) jsonObject.get("name");
+                            int health = ((Number) jsonObject.get("health")).intValue();
+                            int luck = ((Number) jsonObject.get("luck")).intValue();
+                            int gold = ((Number) jsonObject.get("gold")).intValue();
+                            String type = (String) jsonObject.get("type");
+                            int strength = ((Number) jsonObject.get("strength")).intValue();
+                            int intelligence = ((Number) jsonObject.get("intelligence")).intValue();
+                            boolean isBeingUsed = (Boolean) jsonObject.get("beingUsed");
+                            Long characterID = ((Number) jsonObject.get("id")).longValue();
 
+                            HBox characterCard = new HBox(10);
+                            characterCard.setPadding(new Insets(10));
+                            Label characterLabel = new Label(name);
+                            Button selectButton = new Button("Select");
 
-                    HBox characterCard = new HBox(10);
-                    characterCard.setPadding(new Insets(10));
-                    Label characterLabel = new Label(name);
-                    Button selectButton = new Button("Select");
-                    if (isBeingUsed) {
-                        selectButton.setDisable(true);
-                    } else {
-                        selectButton.setOnAction(e -> {
-                            primaryStage.close();
-                            showCharacterDetails(primaryStage, name, type, health, luck, gold, strength, intelligence, isBeingUsed, characterID);
+                            if (isBeingUsed) {
+                                selectButton.setDisable(true);
+                            } else {
+                                selectButton.setOnAction(e -> {
+                                    primaryStage.close();
+                                    showCharacterDetails(primaryStage, name, type, health, luck, gold, strength, intelligence, isBeingUsed, characterID);
+                                });
+                            }
+
+                            characterCard.getChildren().addAll(characterLabel, selectButton);
+                            vbox.getChildren().add(characterCard);
                         });
-                    }
-                    characterCard.getChildren().addAll(characterLabel, selectButton);
-                    vbox.getChildren().add(characterCard);
-                }
+
                 Button backButton = new Button("Back");
-                backButton.setOnAction(e -> showMainMenu(primaryStage,userToken));
+                backButton.setOnAction(e -> showMainMenu(primaryStage, userToken));
                 vbox.getChildren().add(backButton);
 
             } catch (Exception e) {
@@ -371,6 +378,7 @@ public class Client extends Application {
 
         Label statusLabel = new Label();
 
+        //Event Listener on Claim button to claim character based on user ID
         Button claimButton = new Button("Claim");
         claimButton.setOnAction(e -> {
             boolean success = claimCharacter(characterId, this.userId);

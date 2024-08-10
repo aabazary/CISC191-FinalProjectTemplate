@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
 public class User {
 
     @Id
@@ -15,15 +14,13 @@ public class User {
     private String username;
     private String password;
     private int score;
-    private boolean isPlaying=false;
+    private boolean isPlaying = false;
 
     @OneToOne
-//    @JoinColumn(name = "claimed_character_id")
     @JsonIgnoreProperties("claimedBy")
     private Character claimedCharacter;
 
-    // Constructors, getters, and setters
-
+    // Constructors
     public User() {
     }
 
@@ -37,7 +34,6 @@ public class User {
     }
 
     // Getters and setters
-
     public Long getId() {
         return id;
     }

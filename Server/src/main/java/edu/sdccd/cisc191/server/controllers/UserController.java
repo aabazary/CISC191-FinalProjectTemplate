@@ -23,12 +23,16 @@ public class UserController {
      */
     @PostMapping("/signup")
     public String signUp(@RequestBody User user) {
+
+        //Check if Email already exists ind DB
         if (userRepository.findByEmail(user.getEmail()) != null) {
             return "Email already exists";
         }
         // Encode password before saving
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
+
+        //Save User with encrypted password
         userRepository.save(user);
         return "User registered successfully";
     }
@@ -39,14 +43,17 @@ public class UserController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody User loginRequest) {
+        //Search for User based on email
         User existingUser = userRepository.findByEmail(loginRequest.getEmail());
         Map<String, String> response = new HashMap<>();
 
         if (existingUser != null) {
+            //Verify provided password with encrypted one stored in DB
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             boolean passwordMatches = encoder.matches(loginRequest.getPassword(), existingUser.getPassword());
 
             if (passwordMatches) {
+                //Create JWT Token
                 String token = generateToken(existingUser.getEmail());
                 response.put("token", token);
                 response.put("userId", String.valueOf(existingUser.getId()));
@@ -54,6 +61,7 @@ public class UserController {
                 return ResponseEntity.ok(response);
             }
         }
+        //Return an unauthorized response if the email or password is invalid
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
     }
 
@@ -64,7 +72,7 @@ public class UserController {
     public List<User> getAllUsers() {
         Iterable<User> usersIterable = userRepository.findAll();
         List<User> userList = new ArrayList<>();
-        usersIterable.forEach(userList::add);
+        usersIterable.forEach(userList::add); // Convert Iterable to List
         return userList;
     }
 
@@ -74,6 +82,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        // Search for the user by ID in the DB
         Optional<User> user = userRepository.findById(id);
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
@@ -86,18 +95,23 @@ public class UserController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        // Search for the user by ID in the DB
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User existingUser = userOptional.get();
 
+            //Update User details
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(user.getPassword());
             existingUser.setClaimedCharacter(user.getClaimedCharacter());
             existingUser.setPlaying(user.isPlaying());
+
+            //Save User
             userRepository.save(existingUser);
             return ResponseEntity.ok(existingUser);
 
         }
+        //Return 404 if user not found
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
